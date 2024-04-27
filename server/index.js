@@ -27,4 +27,13 @@ app.use('/api/auth', authRouter)
 let PORT = process.env.PORT || 8000
 app.listen(PORT, ()=>{
     console.log(`Server is connected at port ${PORT}`)
-})
+});
+app.use((err, req, res, next) => {
+    const statusCode = err.statusCode || 500;
+    const message = err.message || 'Internal Server Error';
+    return res.status(statusCode).json({
+      success: false,
+      statusCode,
+      message,
+    });
+  });
